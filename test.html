@@ -1,0 +1,89 @@
+<html><head>
+<script type = "text/javascript">
+
+window.onload = function() {
+	var observer = new MutationObserver(function(mutations) {
+	  mutations.forEach(function(mutation) {
+	    console.log(mutation.type);
+	  });    
+	});
+	var target = document.body;
+	var config = { attributes: true, childList: true, characterData: true, subtree: true};
+	observer.observe(document.body, config);
+	//var tes = document.body.firstChild;
+	//observer.observe(tes);
+	//observer.disconnect();
+	/*var target = document.body;
+	target.addEventListener('DOMNodeInserted', function(event) {
+	  console.log(mutation.type)
+	});*/
+	
+	/*var target = document.body;
+	target.addEventListener('DOMSubTreeModified', function(event) {
+	  print();
+	});*/
+}
+
+function print(){
+  var tree = document.getElementById("tree");
+  tree.innerHTML = " ";
+  printDOMTree(document.body, 0);
+}
+
+function printDOMTree(element, layer){
+  var tree = document.getElementById("tree");
+	if( element.childNodes.length == 0 ){
+		return;
+	}
+
+	for(var j=0;j<layer;j++){
+		tree.innerHTML += "| ";
+	}
+
+	tree.innerHTML += element.tagName +"<br>";
+	
+	for(var i=0;i<element.childNodes.length; i++){
+		var child = element.childNodes[i];
+		printDOMTree( child, layer + 1 );
+	}
+}
+
+function change(){
+  var text = document.getElementById("text");
+  var change = document.getElementById("change");
+  change.innerHTML = text.value;
+}
+</script>
+
+<title>DOM更新</title>
+</head>
+
+<body>
+
+  <div id="test">
+    <table border="1">
+      <tbody>
+        <tr>
+          <td>cell 1</td>
+        </tr>
+
+        <tr>
+          <td>cell 2</td>
+        </tr>
+
+        <tr>
+          <td>cell 3</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <TEXTAREA cols="40" rows="10" id = text></TEXTAREA>
+  <button onClick = "change();">change</button>
+  <div id="change"></div>
+  <button onclick ="print();">get tree</button>
+  <div id="tree"></div>
+  <p>コメント</p>
+
+</body>
+</html>
